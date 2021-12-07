@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+ 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sistram - Activacion de Cuenta Via Email</title>
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+	<link rel="stylesheet" href="css/estilo.css" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+</head>
+<body>
+<center>
+	<form name="formulario" id="formulario" method="post" action="">
+	<table width="50%">
+		<tr>
+
+			<td><br/><div id="mensaje"></div></td>
+		</tr>
+		<tr>
+			<td><center>
+				<table border=0 class="ventanas" width="70%">
+					<tr>
+    				  <td colspan="2" class="tabla_ventanas_login" height="2"><legend align="center">::: Rellene los datos para poder activar su cuenta ::: </legend></td>
+					</tr>
+					<tr><td colspan=2><br/></td></tr>
+					<tr>
+						<td colspan=2><center>
+							<table>
+								
+								
+							
+								<tr>
+								<td align="right">Email: </td><td><input type="email" class="caja"  name="Email" id="Email" /></td>
+								</tr>
+								
+								<tr>
+								<td align="right">Contraseña: </td><td><input type="password" class="caja"  name="Email" id="pw1" /></td>
+								</tr>
+								<tr>
+								<td align="right">  Repite la Contraseña: </td><td><input type="password" class="caja"  name="Email" id="pw2" /></td>
+								</tr>
+				
+								<tr>
+								
+								</tr>
+								<tr><td colspan=2><center><input type="submit" id="guarda" name="guarda" class="btn btn-sm btn-success" value="Activar cuenta" /></center></td></tr>
+							</table>
+						</center>
+						</td>
+					</tr>
+				   </table>
+				</center>
+			</td>
+		</tr>
+	</table>
+	</form>
+   
+ </center>
+ <script src="js/jquery-1.8.2.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script>
+	$(document).ready(function(){
+		$('#formulario').on('submit', function(e){
+    			e.preventDefault();
+    			var opcion="cuenta";
+    			var email = $.trim($('#Email').val());
+    			var pas = $.trim($('#pw1').val());
+    			var pas2 =$.trim($('#pw2').val());
+    			
+    			if(pas === pas2){
+    			    
+						$.ajax({
+            	   			url: "../controlador/validar.php",
+              				type: "POST",
+              				datatype:"json",    
+              				data:  {email:email,contra:pas,opcion:opcion},
+        					}).done(function(resp){
+           						if(resp==4){
+           						    alert("Este correo no esta registrado");
+           						}else if(resp==2){
+           							alert("Error en el servidor");
+           						}else if(resp==1){
+           							alert("Cuenta activada");
+           							window.location.href="index.html";
+           						}
+            				});
+						
+    			}else{
+    			    
+						alert("las contraseñas no coinciden");
+    			}
+    			
+
+    							
+    							
+    	});
+	});
+    </script>
+</body>
+</html>

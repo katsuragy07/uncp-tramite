@@ -1,0 +1,1 @@
+﻿<?xml version="1.0" encoding="utf-8" ?><info>	<infoitem key="UD_rs2" value="name:id;datatype:int,name:userid;datatype:int,name:empid;datatype:int,name:comments;datatype:blob,name:fecha;datatype:datetime,name:uip;datatype:string,name:post_id;datatype:int" /></info>

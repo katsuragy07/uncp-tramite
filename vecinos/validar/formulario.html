@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+ 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sistram - Activacion de Cuenta Via Email</title>
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+	<link rel="stylesheet" href="css/estilo.css" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+</head>
+<body>
+<center>
+	<form name="formulario" id="formulario" method="post" action="">
+	<table width="50%">
+		<tr>
+
+			<td><br/><div id="mensaje"></div></td>
+		</tr>
+		<tr>
+			<td><center>
+				<table border=0 class="ventanas" width="70%">
+					<tr>
+    				  <td colspan="2" class="tabla_ventanas_login" height="10"><legend align="center">::: Formulario de Registro ::: </legend></td>
+					</tr>
+					<tr><td colspan=2><br/></td></tr>
+					<tr>
+						<td colspan=2><center>
+							<table>
+								<tr>
+								<td align="right">Nombre: </td><td><input type="text" class="caja"  name="Nombre" id="Nombre" /></td>
+								</tr>
+								
+								<tr>
+								<td align="right">Apellidos: </td><td><input type="text" class="caja"  name="Apellidos" id="Apellidos" /></td>
+								</tr>
+								
+								<tr>
+								<td align="right">Email: </td><td><input type="email" class="caja"  name="Email" id="Email" /></td>
+								</tr>
+								
+								<tr>
+								<td align="right">Sexo: </td>
+								<td>
+									<select  class="caja" id="cbSexo">
+									<option value="Masculino">Masculino</option>
+									<option value="Femenino">Femenino</option>
+									</select>
+								</td>
+								</tr>
+				
+								<tr>
+								<td align="right">Edad: </td><td><input type="text" class="caja"  name="Edad" id="eddad" /></td>
+								</tr>
+								<tr><td colspan=2><center><input type="submit" id="guarda" name="guarda" class="btn btn-sm btn-success" value="Registrarse" /></center></td></tr>
+							</table>
+						</center>
+						</td>
+					</tr>
+				   </table>
+				</center>
+			</td>
+		</tr>
+	</table>
+	</form>
+   
+ </center>
+ <script src="js/jquery-1.8.2.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script>
+	$(document).ready(function(){
+		$('#formulario').on('submit', function(e){
+    			e.preventDefault();
+    			var opcion="validar";
+    			var Nombre = $.trim($('#Nombre').val());
+    			var Apellidos = $.trim($('#Apellidos').val());
+    			var Email = $.trim($('#Email').val());
+    			var cbSexo = $.trim($('#cbSexo').val());
+    			var Edad = $.trim($('#eddad').val());
+    			
+    			if(Nombre.length==0 || Apellidos.length==0 || Email.length==0 || cbSexo.length==0 || Edad.length==0){
+    				alert("todos los campos son obligatorios");
+    			}else{
+    				if(Edad<18){
+    					alert("Tiene que ser mayor de edad");
+    				}else{
+
+    					
+						$.ajax({
+            	   			url: "../controlador/validar.php",
+              				type: "POST",
+              				datatype:"json",    
+              				data:  {nombre:Nombre,apellidos:Apellidos,mail:Email,cbsexo:cbSexo,edad:Edad,opcion:opcion},
+        					}).done(function(resp){
+           						if(resp==4){
+           							alert("Este correo ya esta en uso");
+           						}else if(resp==3){
+           							alert("Error al Insertar");
+           						}else if(resp==2){
+           							alert("Revise su correo electronico en bandeja de entrada o en correos no deseados o spam");
+           							window.location.href="index.html";
+           						}
+            				});
+								
+    				}
+    			}				
+    	});
+	});
+    </script>
+</body>
+</html>

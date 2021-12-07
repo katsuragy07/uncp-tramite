@@ -1,0 +1,13 @@
+<?php
+include_once('archivos.php');
+//include_once('auth.php');
+include_once('comun.php');
+include_once('fecha.php');
+//include_once('db_data.php');
+include_once('encript.php');
+include_once('encript_url.php');
+include_once('math.php');
+//include_once('mysql.php');
+include_once('navegadores.php');
+include_once('session.php');
+?>
