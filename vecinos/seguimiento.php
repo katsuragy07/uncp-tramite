@@ -161,6 +161,23 @@ $totalPages_rs3 = ceil($totalRows_rs3/$maxRows_rs3)-1;
           <td width="80" align="right" valign="middle" class="btit_3">Empleado</td>
           <td valign="middle"><?php echo $row_rs1['enombre']; ?></td>
         </tr>
+	<tr valign="baseline">
+          <td width="80" align="right" valign="middle" class="btit_3">Adjunto</td>
+          <td>
+                <?php
+                  if(isset($row_rs1['file']) && $row_rs1['file']!=""){
+                ?>
+                   
+                    <a href="../data/tdex_adjuntos/<?php echo $row_rs1['file']; ?>" target="_blank" title="Descargar el archivo adjunto">
+                      <img src="../images/ico_<?php echo $row_rs1['ext']; ?>.png" style="border:none;">
+                    </a>
+                    <div class="min"><?php echo $row_rs1['size']; ?></div>
+                   
+                <?php 
+                  }
+                ?> 
+          </td>
+        </tr>
       
         
       </table></td>

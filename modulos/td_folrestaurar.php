@@ -43,26 +43,26 @@ $startRow_rs1 = $pageNum_rs1 * $maxRows_rs1;
 $varssess = $_SESSION['u_ofice'];
 
 mysql_select_db($database_cn1, $cn1);
-$query_rs1 = "SELECT log_archivo_int.*
-,(SELECT CONCAT(empleado.apellido,', ',empleado.nombre) FROM empleado WHERE empleado.id = log_archivo_int.empid LIMIT 1) AS enombre
-,(SELECT CONCAT(lugares.nombre,' | ',oficinas.nombre) FROM oficinas,lugares,log_archivo_int WHERE oficinas.id=log_archivo_int.c_oficina AND oficinas.lugares_id=lugares.id AND oficinas.id = '$varssess' LIMIT 1)AS onombre
-,(SELECT folioint.firma FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS firma
-,(SELECT folioint.asunto FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS asunto
-,(SELECT folioint.obs FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS obser
-,(SELECT folioint.urgente FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS urgente
-,(SELECT folioint.id FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS foid
-,(SELECT folioint.cabecera FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS cabecera
-,(SELECT folioint.`exp` FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS `exp`
-,(SELECT folioint.td_tipos_id FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS td_tipos_id
-,(SELECT folioint.nfolios FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS nfolios
-,(SELECT folioint.file FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS ofile
-,(SELECT folioint.ext FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS oext
-,(SELECT folioint.size FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) AS osize
-FROM log_archivo_int
-WHERE log_archivo_int.c_oficina = $varssess
-AND log_archivo_int.tipo = 1
-AND (SELECT folioint.id FROM folioint WHERE folioint.id=log_archivo_int.folioint_id LIMIT 1) IS NOT NULL
-ORDER BY log_archivo_int.fecha DESC";
+$query_rs1 = "SELECT log_archivo.*
+,(SELECT CONCAT(empleado.apellido,', ',empleado.nombre) FROM empleado WHERE empleado.id = log_archivo.empid LIMIT 1) AS enombre
+,(SELECT CONCAT(lugares.nombre,' | ',oficinas.nombre) FROM oficinas,lugares,log_archivo WHERE oficinas.id=log_archivo.c_oficina AND oficinas.lugares_id=lugares.id AND oficinas.id = '$varssess' LIMIT 1)AS onombre
+,(SELECT folioext.firma FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS firma
+,(SELECT folioext.asunto FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS asunto
+,(SELECT folioext.obs FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS obser
+,(SELECT folioext.urgente FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS urgente
+,(SELECT folioext.id FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS foid
+,(SELECT folioext.cabecera FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS cabecera
+,(SELECT folioext.`exp` FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS `exp`
+,(SELECT folioext.td_tipos_id FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS td_tipos_id
+,(SELECT folioext.file FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS ofile
+,(SELECT folioext.ext FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS oext
+,(SELECT folioext.atendido FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS atendido
+,(SELECT folioext.size FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) AS osize
+FROM log_archivo
+WHERE log_archivo.c_oficina = $varssess
+AND log_archivo.tipo = 0
+AND (SELECT folioext.id FROM folioext WHERE folioext.id=log_archivo.folioext_id LIMIT 1) IS NOT NULL
+ORDER BY log_archivo.fecha DESC";
 $query_limit_rs1 = sprintf("%s LIMIT %d, %d", $query_rs1, $startRow_rs1, $maxRows_rs1);
 $rs1 = mysql_query($query_limit_rs1, $cn1) or die(mysql_error());
 $row_rs1 = mysql_fetch_assoc($rs1);
@@ -105,14 +105,12 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <style>
 #wpag{background:transparent url(../images/pico_11.jpg) no-repeat fixed bottom right;}
 </style>
-<script type="text/javascript">function dlitem(ord){if(confirm("Deseas eliminar este registro?")){document.location.href= '../opers/del_td_nuevo.php?pk='+ord;}}</script> 
-
 </head>
 <body>
 <div id="container"><div id="wpag">
   <div id="content">
 
-<h1>Expedientes Archivados (Internos)</h1>
+<h1>Expedientes Archivados (Externos)</h1>
 <div class="hr"><em></em><span></span></div>
 
 <div class="clear" style="height:5px"></div>
@@ -120,6 +118,10 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 </table>
 
 
+<script>
+  console.log(<?php echo $row_rs1['id']; ?>);
+  console.log(<?php echo $row_rs1['foid']; ?>);
+</script>
 
 <?php 
   if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
@@ -138,14 +140,15 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
     <td valign="top"><h2>Lista de expedientes archivados en la oficina</h2>
         <table width="90%" border="0" cellpadding="0" cellspacing="0" class="tabla2">
           <tr>
-            <td width="93" class="btit_1">Número interno</td>
+            <td width="70" class="btit_1">Numero interno</td>
             <td align="left" class="btit_1">Cabecera y fecha</td>            
             <td class="btit_1">Firma, asunto y observaciones</td>
             <td class="btit_1">Oficina de destino</td>
-            <td align="center" class="btit_1">N° de<br />Folios</td>
+            <td align="center" class="btit_1">Vence en</td>
             <td align="center" class="btit_1">Adjunto<br />folio</td>
             <td align="center" class="btit_1">Adjunto<br />
             archivado</td>
+            <td align="center" class="btit_1">Restaurar</td>
             </tr>
           <?php if ($totalRows_rs1 > 0) { // Show if recordset not empty ?>
           <?php $cont=0; ?>
@@ -154,26 +157,41 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
           <tr <?php 
 		  if ($row_rs1['urgente']==1) echo " class=\"urgente\" ";
 		  ?>>
-            <td width="93"><?php echo dftipo($row_rs1['td_tipos_id']); ?>
+            <td width="70"><?php echo dftipo($row_rs1['td_tipos_id']); ?>
             <br /><span class="min"><?php echo dcoidfo($row_rs1['exp'],$row_rs1['fecha']);?></span>            </td>
             <td align="left"><?php echo ($row_rs1['cabecera']); ?><br><span class="min">Fecha: 
               <?php echo dptiemp($row_rs1['fecha']); ?></span></td>            
-            <td><a href="tdin_verfolio.php?pk=<?php echo $row_rs1['foid'];?>"><?php echo $row_rs1['firma']."<br /><span class='min'>".$row_rs1['asunto']."</span>"; ?><br><span class="min">Observaciones: <?php echo $row_rs1['obser']; ?></span></a></td>
+            <td><a href="td_verfolio.php?pk=<?php echo $row_rs1['foid'];?>"><?php echo $row_rs1['firma']."<br /><span class='min'>".$row_rs1['asunto']."</span>"; ?><br><span class="min">Observaciones: <?php echo $row_rs1['obser']; ?></span></a></td>
             <td><strong><?php echo $row_rs1['onombre']; ?></strong><br /> 
             <span class="min">A&ntilde;adido por: <?php echo $row_rs1['enombre']; ?></span><br><span class="min">Observaciones: <?php echo $row_rs1['obs']; ?></span>
             <?php if ($row_rs1['urgente']==1) {?>
             <br /><span class="min" style="color:#FF6600;"><strong>Prioridad: URGENTE</strong></span>
 			<?php }?>
             </td>
-            <td align="center"><?php echo $row_rs1['nfolios']; ?></td>
+            <td align="center"><?php 
+				if($row_rs1['atendido']==NULL){
+					echo dfechv($row_rs1['fecha'],$row_rs1['td_tipos_id']); 
+				}else{
+					echo "Atendido";
+				}
+				?></td>
             <td align="center"><?php if($row_rs1['ofile']!=""){?>
-      <a href="../data/tdin_adjuntos/<?php echo $row_rs1['ofile'];?>" target="_blank" title="Descargar el archivo adjunto"><img src="../images/<?php echo dtarchivo($row_rs1['oext']);?>" style="border:none;" /></a>
+      <a href="../data/tdex_adjuntos/<?php echo $row_rs1['ofile'];?>" target="_blank" title="Descargar el archivo adjunto"><img src="../images/<?php echo dtarchivo($row_rs1['oext']);?>" style="border:none;" /></a>
       <div class="min" align="center"><?php echo $row_rs1['osize'];?></div>
       <?php }else{ ?>No<?php } ?></td>
       <td align="center"><?php if($row_rs1['file']!=""){?>
-      <a href="../data/tdin_adjuntos/<?php echo $row_rs1['file'];?>" target="_blank" title="Descargar el archivo adjunto"><img src="../images/<?php echo dtarchivo($row_rs1['ext']);?>" style="border:none;" /></a>
+      <a href="../data/tdex_adjuntos/<?php echo $row_rs1['file'];?>" target="_blank" title="Descargar el archivo adjunto"><img src="../images/<?php echo dtarchivo($row_rs1['ext']);?>" style="border:none;" /></a>
       <div class="min" align="center"><?php echo $row_rs1['size'];?></div>
       <?php }else{ ?>No<?php } ?></td>
+
+              <td width="70">
+                <div class="spacer">
+                  <a href="td_farchivar.php?fk=<?php echo $row_rs1['id']; ?>&pk=<?php echo $row_rs1['foid']; ?>">
+                    <div class="skin left" style="background-position:-48px -95px;margin-right:3px;"></div>Restaurar
+                  </a>
+                </div>
+              </td>
+
             </tr>
           <?php } while ($row_rs1 = mysql_fetch_assoc($rs1)); ?>
           <?php } // Show if recordset not empty ?>

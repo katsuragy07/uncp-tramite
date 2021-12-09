@@ -105,6 +105,7 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <style>
 #wpag{background:transparent url(../images/pico_11.jpg) no-repeat fixed bottom right;}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="container"><div id="wpag">
@@ -116,6 +117,23 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <div class="clear" style="height:5px"></div>
 <table <?php echo dtabla();?> border="0" align="center" cellpadding="0" cellspacing="0"><tr></tr>
 </table>
+
+
+<script>
+  console.log(<?php echo $row_rs1['id']; ?>);
+  console.log(<?php echo $row_rs1['foid']; ?>);
+  console.log($());
+</script>
+
+<?php 
+  if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
+?>
+    <script>
+      alert("Eres admin");
+    </script>
+<?php 
+  }
+?>
 
 
 <div >
@@ -132,6 +150,7 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
             <td align="center" class="btit_1">Adjunto<br />folio</td>
             <td align="center" class="btit_1">Adjunto<br />
             archivado</td>
+            <td align="center" class="btit_1">Restaurar</td>
             </tr>
           <?php if ($totalRows_rs1 > 0) { // Show if recordset not empty ?>
           <?php $cont=0; ?>
@@ -166,6 +185,15 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
       <a href="../data/tdex_adjuntos/<?php echo $row_rs1['file'];?>" target="_blank" title="Descargar el archivo adjunto"><img src="../images/<?php echo dtarchivo($row_rs1['ext']);?>" style="border:none;" /></a>
       <div class="min" align="center"><?php echo $row_rs1['size'];?></div>
       <?php }else{ ?>No<?php } ?></td>
+
+              <td width="70">
+                <div class="spacer" style="text-align:center;">
+                  <a href="td_folrestaurar.php?pk=<?php echo $row_rs1['foid']; ?>">
+                    <div class="skin center" style="background-position:-48px -95px;margin:auto;"></div>Restaurar
+                  </a>
+                </div>
+              </td>
+
             </tr>
           <?php } while ($row_rs1 = mysql_fetch_assoc($rs1)); ?>
           <?php } // Show if recordset not empty ?>

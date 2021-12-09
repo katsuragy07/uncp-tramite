@@ -166,6 +166,23 @@ $up_url="tdex_adjuntos";
 include("../includes/uploadoc_scripts.php");
 ?>
 <link href="../scripts/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+
+<script>
+  function validate(form) {
+      // validation code here ...
+      /*
+      if(!valid) {
+          alert('Please correct the errors in the form!');
+          return false;
+      }
+      else {
+          return confirm('Do you really want to submit the form?');
+      }
+      */
+      return confirm('Estas seguro de archivar este Expediente?');
+  }
+</script>
+
 </head>
 <body>
 <div id="container">
@@ -186,7 +203,7 @@ include("../includes/uploadoc_scripts.php");
     <strong>Asunto:</strong> <?php echo $row_rs2['asunto']; ?><br/>
     <strong>Fecha:</strong> <?php echo dptiemp($row_rs2['fecha']); ?><br/>
     </p>
-    <form action="<?php echo $editFormAction; ?>" method="POST" name="form1">
+    <form action="<?php echo $editFormAction; ?>" method="POST" name="form1" onsubmit="return validate(this);">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tabla">
         <tr valign="baseline">
           <td width="130" align="right" class="btit_1">Item</td>

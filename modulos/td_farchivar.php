@@ -142,6 +142,23 @@ $totalRows_rs2 = mysql_num_rows($rs2);
 </style>
 <script src="../scripts/SpryValidationTextarea.js" type="text/javascript"></script>
 <link href="../scripts/SpryValidationTextarea.css" rel="stylesheet" type="text/css" />
+
+<script>
+  function validate(form) {
+      // validation code here ...
+      /*
+      if(!valid) {
+          alert('Please correct the errors in the form!');
+          return false;
+      }
+      else {
+          return confirm('Do you really want to submit the form?');
+      }
+      */
+      return confirm('Estas seguro de archivar este Expediente?');
+  }
+</script>
+
 </head>
 <body>
 <div id="container">
@@ -162,7 +179,7 @@ $totalRows_rs2 = mysql_num_rows($rs2);
     <strong>Asunto:</strong> <?php echo $row_rs2['asunto']; ?><br/>
     <strong>Fecha:</strong> <?php echo dptiemp($row_rs2['fecha']); ?><br/>
     </p>
-    <form action="<?php echo $editFormAction; ?>" method="POST" name="form1">
+    <form action="<?php echo $editFormAction; ?>" method="POST" name="form1" onsubmit="return validate(this);">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tabla">
         <tr valign="baseline">
           <td width="130" align="right" class="btit_1">Item</td>
@@ -193,6 +210,11 @@ $totalRows_rs2 = mysql_num_rows($rs2);
           <td><input type="submit" class="but1" value="Finalizar"></td>
           </tr>
       </table>
+
+
+
+
+
       <input type="hidden" name="id" value="">
       <input type="hidden" name="deid" value="<?php echo $_GET['fk'];?>">
       <input type="hidden" name="tipo" value="0">
