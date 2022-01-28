@@ -114,14 +114,16 @@ eval(function(p,a,c,k,e,r){e=function(c){return c.toString(a)};if(!''.replace(/^
 <table <?php echo dtabla();?> border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td valign="top">
-<form id="form" action="#">
-<div id="suggest">
-<h2>Búsqueda rápida (Ingrese la firma o asunto):</h2>
-<br />
-<input type="text" size="25" value="" id="pname" onkeyup="suggest(this.value);" onblur="fill();" class="tbox2" autocomplete="off"/>
-<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="../images/arrowb.png" style="position: relative; top: -12px; left: 30px;" alt="fecha" />
-<div class="suggestionList" id="suggestionsList"> &nbsp; </div></div></div>
-</form>
+
+    
+    <form id="form" action="#">
+    <div id="suggest">
+    <h2>Búsqueda rápida (Ingrese la firma o asunto):</h2>
+    <br />
+    <input type="text" size="25" value="" id="pname" onkeyup="suggest(this.value);" onblur="fill();" class="tbox2" autocomplete="off"/>
+    <div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="../images/arrowb.png" style="position: relative; top: -12px; left: 30px;" alt="fecha" />
+    <div class="suggestionList" id="suggestionsList"> &nbsp; </div></div></div>
+    </form>
 
     
     <h2>Lista de expedientes registrados (Internos)</h2>

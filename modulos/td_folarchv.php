@@ -104,8 +104,12 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <link href="../css/int.css" rel="Stylesheet" type="text/css" />
 <style>
 #wpag{background:transparent url(../images/pico_11.jpg) no-repeat fixed bottom right;}
+#result{height:20px;font-size:16px;font-family:Arial,Helvetica,sans-serif;color:#333;padding:5px;margin-bottom:10px;background-color:#ff9;}#country{padding:3px;border:1px #CCC solid;font-size:17px;}.suggestionsBox{margin:26px 0px 0px 0px;width:100%;padding:0px;background-color:#fff;border-top:3px solid #add1ff;color:#00e;}.suggestionList{margin:0px;padding:0px;}.suggestionList ul li{list-style:none;cursor:pointer;margin-bottom:5px;padding:7px;border:1px solid #c0c0c2;}.suggestionList ul li:hover{color:#000;border:1px solid #ffb700;background-color:#ffd86c;font-weight:bold;}.suggestionList ul{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#333;padding:0;margin:0;}.load{background-image:url(../images/loader.gif);background-position:right;background-repeat:no-repeat;}#suggest{position:relative;}.suggenfer{margin:0px;padding:0px;}.suggenfer ul li{list-style:none;cursor:pointer;margin-bottom:5px;padding:7px;border:1px solid #a8ccea;background-color:#f3f8fc;color:#555;}.suggenfer ul li:hover{color:#00e;border:1px solid #00e;}.suggenfer ul li a{text-decoration:none;font-weight:bold;color:#1a4568;}.suggenfer ul li a:visited{text-decoration:none;font-weight:bold;color:#1a4568;}.suggenfer ul{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#333;padding:0;margin:0;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+function suggest(inputString,inputOfice){console.log(inputOfice);if(inputString.length==0){$('#suggestions').fadeOut()}else{$('#pname').addClass('load');$.post("../includes/autos_exp_archivados.php",{queryString:""+inputString+"",queryOfice:""+inputOfice+""},function(data){if(data.length>0){$('#suggestions').fadeIn();$('#suggestionsList').html(data);$('#pname').removeClass('load')}})}}function fill(thisValue){$('#pname').val(thisValue);setTimeout("$('#suggestions').fadeOut();",600)}var default_content="";
+</script>
 </head>
 <body>
 <div id="container"><div id="wpag">
@@ -126,20 +130,33 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 </script>
 
 <?php 
-  if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
+  //if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
 ?>
     <script>
-      alert("Eres admin");
+      //alert("Eres admin");
     </script>
 <?php 
-  }
+  //}
 ?>
 
 
 <div >
 <table <?php echo dtabla();?> border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td valign="top"><h2>Lista de expedientes archivados en la oficina</h2>
+    <td valign="top">
+    
+
+    <form id="form" action="#">
+    <div id="suggest">
+    <h2>Búsqueda rápida (Ingrese la firma o asunto):</h2>
+    <br />
+    <input type="text" size="25" value="" id="pname" onkeyup="suggest(this.value, <?php echo $varssess; ?>);" onblur="fill();" class="tbox2" autocomplete="off"/>
+    <div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="../images/arrowb.png" style="position: relative; top: -12px; left: 30px;" alt="fecha" />
+    <div class="suggestionList" id="suggestionsList"> &nbsp; </div></div></div>
+    </form>
+
+    
+    <h2>Lista de expedientes archivados en la oficina</h2>
         <table width="90%" border="0" cellpadding="0" cellspacing="0" class="tabla2">
           <tr>
             <td width="70" class="btit_1">Numero interno</td>
@@ -150,7 +167,7 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
             <td align="center" class="btit_1">Adjunto<br />folio</td>
             <td align="center" class="btit_1">Adjunto<br />
             archivado</td>
-            <td align="center" class="btit_1">Restaurar</td>
+            <!--<td align="center" class="btit_1">Restaurar</td>-->
             </tr>
           <?php if ($totalRows_rs1 > 0) { // Show if recordset not empty ?>
           <?php $cont=0; ?>
@@ -186,13 +203,17 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
       <div class="min" align="center"><?php echo $row_rs1['size'];?></div>
       <?php }else{ ?>No<?php } ?></td>
 
+
+      <!--
               <td width="70">
                 <div class="spacer" style="text-align:center;">
-                  <a href="td_folrestaurar.php?pk=<?php echo $row_rs1['foid']; ?>">
+                  <a href="td_folrestaurar.php?pk=<?php //echo $row_rs1['foid']; ?>">
                     <div class="skin center" style="background-position:-48px -95px;margin:auto;"></div>Restaurar
                   </a>
                 </div>
               </td>
+      -->
+
 
             </tr>
           <?php } while ($row_rs1 = mysql_fetch_assoc($rs1)); ?>

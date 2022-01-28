@@ -105,6 +105,7 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <style>
 #wpag{background:transparent url(../images/pico_11.jpg) no-repeat fixed bottom right;}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="container"><div id="wpag">
@@ -121,16 +122,17 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <script>
   console.log(<?php echo $row_rs1['id']; ?>);
   console.log(<?php echo $row_rs1['foid']; ?>);
+  console.log($());
 </script>
 
 <?php 
-  if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
+  //if($_SESSION['u_level']==0 || $_SESSION['u_level']==NULL){
 ?>
     <script>
-      alert("Eres admin");
+      //alert("Eres admin");
     </script>
 <?php 
-  }
+  //}
 ?>
 
 
@@ -185,9 +187,9 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
       <?php }else{ ?>No<?php } ?></td>
 
               <td width="70">
-                <div class="spacer">
-                  <a href="td_farchivar.php?fk=<?php echo $row_rs1['id']; ?>&pk=<?php echo $row_rs1['foid']; ?>">
-                    <div class="skin left" style="background-position:-48px -95px;margin-right:3px;"></div>Restaurar
+                <div class="spacer" style="text-align:center;">
+                  <a href="td_folrestaurar.php?pk=<?php echo $row_rs1['foid']; ?>">
+                    <div class="skin center" style="background-position:-48px -95px;margin:auto;"></div>Restaurar
                   </a>
                 </div>
               </td>

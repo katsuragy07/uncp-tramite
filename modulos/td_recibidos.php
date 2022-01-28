@@ -115,7 +115,7 @@ if($TFM_endLink != $TFM_temp) $TFM_startLink = max(1,$TFM_endLink - $TFM_LimitLi
 <script type="text/javascript">function dlitem(ord){if(confirm("Deseas eliminar este registro?")){document.location.href= '../opers/del_predio.php?pk='+ord;}}</script> 
 <script type="text/javascript" src="../scripts/jquery.js"></script>
 <script type="text/javascript">
-function suggest(inputString){if(inputString.length==0){$('#suggestions').fadeOut()}else{$('#pname').addClass('load');$.post("../includes/autos_folio.php",{queryString:""+inputString+""},function(data){if(data.length>0){$('#suggestions').fadeIn();$('#suggestionsList').html(data);$('#pname').removeClass('load')}})}}function fill(thisValue){$('#pname').val(thisValue);setTimeout("$('#suggestions').fadeOut();",600)}var default_content="";
+function suggest(inputString){if(inputString.length==0){$('#suggestions').fadeOut()}else{$('#pname').addClass('load');$.post("../includes/autos_exp_esperando.php",{queryString:""+inputString+""},function(data){if(data.length>0){$('#suggestions').fadeIn();$('#suggestionsList').html(data);$('#pname').removeClass('load')}})}}function fill(thisValue){$('#pname').val(thisValue);setTimeout("$('#suggestions').fadeOut();",600)}var default_content="";
 </script>
 
 </head>
@@ -134,7 +134,20 @@ function suggest(inputString){if(inputString.length==0){$('#suggestions').fadeOu
 <div >
 <table <?php echo dtabla();?> border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td valign="top"><h2>Lista de expedientes sin recibir</h2>
+    <td valign="top">
+
+    <!--
+    <form id="form" action="#">
+    <div id="suggest">
+    <h2>Búsqueda rápida (Ingrese la firma o asunto):</h2>
+    <br />
+    <input type="text" size="25" value="" id="pname" onkeyup="suggest(this.value);" onblur="fill();" class="tbox2" autocomplete="off"/>
+    <div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="../images/arrowb.png" style="position: relative; top: -12px; left: 30px;" alt="fecha" />
+    <div class="suggestionList" id="suggestionsList"> &nbsp; </div></div></div>
+    </form>
+    -->
+
+    <h2>Lista de expedientes sin recibir</h2>
         <table width="90%" border="0" cellpadding="0" cellspacing="0" class="tabla2">
           <tr>
             <td width="70" class="btit_1">Número interno</td>
